@@ -3,6 +3,7 @@ package controllers
 import (
 	"jwt/go/initializers"
 	"jwt/go/models"
+	"net/http"
 	"os"
 	"time"
 
@@ -79,5 +80,8 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{"token": tokenString})
+	c.SetSameSite(http.SameSiteNoneMode)
+	c.SetCookie("Authorization", tokenString, 3600*24*30, "", "", false, true)
+
+	c.JSON(200, gin.H{})
 }
